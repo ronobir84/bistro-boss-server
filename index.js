@@ -30,8 +30,24 @@ async function run() {
         await client.connect();
 
         const menuCollection = client.db("bistroDb").collection("menu");
+        const reviewCollection = client.db("bistroDb").collection("reviews");
+        const cartCollection = client.db("bistroDb").collection("carts");
+
         app.get('/menu', async (request, response) => {
             const result = await menuCollection.find().toArray()
+            response.send(result)
+        })
+        app.get('/reviews', async (request, response) => {
+            const result = await reviewCollection.find().toArray()
+            response.send(result)
+        })
+
+
+        //cards collection
+
+        app.post('/', async (request, response) => {
+            const cardItem = request.body;
+            const result = await cartCollection.insertOne(cardItem);
             response.send(result)
         })
 
@@ -57,3 +73,17 @@ app.get('/', (request, response) => {
 app.listen(port, () => {
     console.log(`Bistro Boss is sitting on port ${port}`)
 })
+
+
+/**
+ * -------------------
+ * NAMING CONVENTION
+ * -------------------
+ * app.get('/users')
+ * app.get('/users/:id')
+ * app.post('/users')
+ * app.put('/users/:id')
+ * app.patch('/users/:id')
+ * app.delete('/users/:id')
+
+*/
