@@ -2,7 +2,7 @@ const express = require('express')
 const app = express()
 const cors = require('cors')
 
-require('dotenv').config() 
+require('dotenv').config()
 const port = process.env.PORT || 5000
 
 // middlewares
@@ -44,8 +44,11 @@ async function run() {
 
 
         //cards collection
-
-        app.post('/', async (request, response) => {
+        app.get('/carts', async (request, response) => {
+            const result = await cartCollection.find().toArray()
+            response.send(result)
+        })
+        app.post('/carts', async (request, response) => {
             const cardItem = request.body;
             const result = await cartCollection.insertOne(cardItem);
             response.send(result)
